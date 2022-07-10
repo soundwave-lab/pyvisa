@@ -33,7 +33,7 @@ import devise
 - move_to(1 軸 pulsecount,2 軸,3 軸,4 軸):
   - #移動場所指定
 
-![reference](./doc/SHOT-302GS_304GS.pdf)
+![reference](./doc/stagecontroller.pdf)
 
 ### oscilloscope クラス
 
