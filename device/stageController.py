@@ -12,6 +12,14 @@ class StageController:
     def __init__(self, interface):  # 接続先を指定
         self._stage = self.rm_.open_resource(interface)
 
+    def max_speed(self):
+        self._stage.write(
+            "D:WS500000F500000R0S500000F500000R0S500000F500000R0S500000F500000R0")
+
+    def change_speed(self, min_speed, max_speed, acce_time):
+        self._stage.write(
+            f"D:WS{min_speed}F{max_speed}R{acce_time}S{min_speed}F{max_speed}R{acce_time}S{min_speed}F{max_speed}R{acce_time}S{min_speed}F{max_speed}R{acce_time}")
+
     # 原点復帰
     def to_zero(self):
         self._stage.write("A:W+P0+P0+P0+P0")
@@ -37,10 +45,10 @@ class StageController:
         puls4 = self.__plus_check(puls4)
         self._stage.write(f"M:W"+puls1+puls2+puls3+puls4)
         self._stage.write("G:")
-        time.sleep(1)
+        time.sleep(2)
 
     # 移動場所指定
-    def move_to_rel(self, puls1, puls2, puls3, puls4):
+    def move_to_abs(self, puls1, puls2, puls3, puls4):
         puls1 = self.__plus_check(puls1)
         puls2 = self.__plus_check(puls2)
         puls3 = self.__plus_check(puls3)

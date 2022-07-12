@@ -1,10 +1,11 @@
 import time
+import device
 
 
 def get_arrival_index(volts, rate):  # get_cutting_wave用の関数
-    volt_basis = max(volts)*rate
+    volt_basis = max(abs(volts))*rate
     for i, volt in enumerate(volts):
-        if volt > volt_basis:
+        if abs(volt) > volt_basis:
             break
     return i
 
@@ -22,19 +23,19 @@ def serch(plus_interval, stage, scope):
     position = []
     position.append(stage.status())
     while True:
-        center = scope.get_pk2pk()
+        center = scope.get_pk2pk(1)
 
         stage.move_to_rel(0, plus_interval, 0, 0)
-        right = scope.get_pk2pk()
+        right = scope.get_pk2pk(1)
 
         stage.move_to_rel(0, -2*plus_interval, 0, 0)
-        left = scope.get_pk2pk()
+        left = scope.get_pk2pk(1)
 
         stage.move_to_rel(0, plus_interval, plus_interval, 0)
-        up = scope.get_pk2pk()
+        up = scope.get_pk2pk(1)
 
-        stage.move_to_rel(0, plus_interval, -2*plus_interval, 0)
-        down = scope.get_pk2pk()
+        stage.move_to_rel(0, 0, -2*plus_interval, 0)
+        down = scope.get_pk2pk(1)
 
         stage.to_zero()
 
@@ -52,6 +53,8 @@ def serch(plus_interval, stage, scope):
             stage.move_one(3, -1*plus_interval)
 
         latest_position = stage.status()
+        print(left, right, up, down)
+        print(latest_position)
 
         if latest_position in position:
             break
